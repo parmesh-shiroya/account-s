@@ -11,7 +11,7 @@ import { ROLES } from './constants';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly roles: ROLES[]) { }
+  constructor(private readonly roles?: ROLES[]) { }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     if (request) {

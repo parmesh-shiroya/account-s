@@ -1,10 +1,10 @@
 import { IsMongoId, IsEmail, IsPhoneNumber, IsNotEmpty, Length } from "class-validator";
+import { ROLES } from "src/shared/constants";
 
 
 export class InsertAdminDTO {
     @IsNotEmpty()
-    @IsMongoId()
-    adminRoleId: string
+    role: ROLES
     @IsNotEmpty()
     firstName: string
     @IsNotEmpty()
@@ -32,7 +32,7 @@ export class LoginAdminDTO {
 }
 
 export class UpdateAdminDTO {
-    adminRoleId?: string
+    role?: ROLES
     firstName?: string
     lastName?: string
     gender?: string

@@ -1,5 +1,7 @@
 export enum ROLES {
     ADMIN,
-    INSTITUTE,
+    INSTITUTE_ADMIN,
     USER
 }
+
+

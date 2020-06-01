@@ -1,14 +1,9 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs'
 import * as jwt from 'jsonwebtoken'
+import { ROLES } from 'src/shared/constants';
 
-
-const InstituteRole = new mongoose.Schema({
-    title: String,
-    isActive: { type: Boolean, default: true },
-}, { timestamps: true })
-
-const Institute = new mongoose.Schema({
+const InstituteSchema = new mongoose.Schema({
     name: String,
     code: String,
     email: String,
@@ -30,36 +25,37 @@ const Institute = new mongoose.Schema({
 }, { timestamps: true })
 
 
-const InstituteUser = new mongoose.Schema({
+const InstituteUserSchema = new mongoose.Schema({
     instituteId: { type: mongoose.Schema.Types.ObjectId, ref: "Institute" },
     firstName: String,
     lastName: String,
     email: String,
     password: String,
-    instituteRoleId: { type: mongoose.Schema.Types.ObjectId, ref: "InstituteRole", autopopulate: { select: ["title", "isActive"] } },
+    role: { type: String, default: ROLES.INSTITUTE_ADMIN },
     mobile: String,
     gender: String,
-    education: String,
-    acchievement: String,
+    image: String,
+    education: [String],
+    acchievement: [String],
     isActive: { type: Boolean, default: false },
-    isOwener: { type: Boolean, default: false },
+    isOwner: { type: Boolean, default: false },
     createdIp: String,
-    createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "AdminUser" },
+    createdBy: mongoose.Schema.Types.ObjectId,
     updatedIp: String,
-    updatedBy: { type: mongoose.Schema.Types.ObjectId, ref: "AdminUser" },
+    updatedBy: mongoose.Schema.Types.ObjectId,
 }, { timestamps: true })
 
 
-InstituteUser.plugin(require('mongoose-autopopulate'))
+InstituteUserSchema.plugin(require('mongoose-autopopulate'))
 
 
 
-InstituteUser.methods.generateJWT = function (extra = {}): string {
+InstituteUserSchema.methods.generateJWT = function (extra = {}): string {
     return jwt.sign(
         {
             _id: this.id,
             email: this.email,
-            role: this.instituteRoleId.title,
+            role: this.role,
             ...extra
         },
         process.env.SECRET,
@@ -71,7 +67,7 @@ InstituteUser.methods.generateJWT = function (extra = {}): string {
 
 
 
-InstituteUser.pre("save", async function (next: mongoose.HookNextFunction) {
+InstituteUserSchema.pre("save", async function (next: mongoose.HookNextFunction) {
 
 
     if (this['password'] && this.isModified('password')) {
@@ -81,8 +77,8 @@ InstituteUser.pre("save", async function (next: mongoose.HookNextFunction) {
 });
 
 
-InstituteUser.methods.comparePassword = async function (password): Promise<boolean> {
+InstituteUserSchema.methods.comparePassword = async function (password): Promise<boolean> {
     return bcrypt.compare(password, this.password)
 };
 
-export { InstituteRole, Institute, InstituteUser };
+export { InstituteSchema, InstituteUserSchema };

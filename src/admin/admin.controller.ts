@@ -13,13 +13,13 @@ export class AdminController {
 
     @Post()
     @UsePipes(new ValidationPipe())
-    async insert(insertAdminDTO: InsertAdminDTO) {
+    async insert(@Body() insertAdminDTO: InsertAdminDTO) {
         return this.adminService.insert(insertAdminDTO)
     }
 
     @Post("login")
     @UsePipes(new ValidationPipe())
-    async login(loginAdminDTO: LoginAdminDTO) {
+    async login(@Body() loginAdminDTO: LoginAdminDTO) {
         return this.adminService.login(loginAdminDTO)
     }
 

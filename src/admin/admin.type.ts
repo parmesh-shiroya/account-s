@@ -1,12 +1,10 @@
 import { Document } from 'mongoose'
+import { ROLES } from 'src/shared/constants';
 
-export interface AdminRole extends Document {
-    title: string,
-    isActive: boolean
-}
+
 
 export interface AdminUser extends Document {
-    adminRoleId: AdminRole,
+    role: ROLES,
     firstName: string,
     lastName: string,
     email: string,

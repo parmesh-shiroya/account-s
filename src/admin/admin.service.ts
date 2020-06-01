@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { AdminUserInterface, AdminRole } from "./admin.type"
+import { AdminUserInterface } from "./admin.type"
 import { InsertAdminDTO, LoginAdminDTO, UpdateAdminDTO } from './admin.dto';
 
 
@@ -9,8 +9,7 @@ import { InsertAdminDTO, LoginAdminDTO, UpdateAdminDTO } from './admin.dto';
 @Injectable()
 export class AdminService {
     constructor(
-        @InjectModel('AdminUser') private readonly adminUserModel: Model<AdminUserInterface>,
-        @InjectModel('AdminRole') private readonly adminRoleModel: Model<AdminRole>
+        @InjectModel('AdminUser') private readonly adminUserModel: Model<AdminUserInterface>
     ) { }
 
     async insert(insertAdminDTO: InsertAdminDTO) {
@@ -52,7 +51,7 @@ export class AdminService {
             mobile: admin.mobile,
             gender: admin.gender,
             image: admin.image,
-            role: admin.adminRoleId.title,
+            role: admin.role,
             token: admin.generateJWT(),
         }
     }

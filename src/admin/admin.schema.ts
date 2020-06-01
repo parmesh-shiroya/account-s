@@ -2,15 +2,11 @@ import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcryptjs';
 import { AdminUser } from "./admin.type"
 import * as jwt from 'jsonwebtoken';
-const AdminRoleSchema = new mongoose.Schema({
-    title: String,
-    isActive: { type: Boolean, default: true },
-
-}, { timestamps: true })
+import { ROLES } from 'src/shared/constants';
 
 
 const AdminUserSchema = new mongoose.Schema({
-    adminRoleId: { type: mongoose.Schema.Types.ObjectId, ref: "AdminRole", autopopulate: { select: ["title", "isActive"] } },
+    role: { type: String, default: ROLES.ADMIN },
     firstName: String,
     lastName: String,
     email: String,
@@ -28,7 +24,7 @@ const AdminUserSchema = new mongoose.Schema({
     updatedBy: [{ type: String, id: { type: mongoose.Schema.Types.ObjectId, ref: "AdminUser" } }],
 }, { timestamps: true })
 
-AdminUserSchema.plugin(require('mongoose-autopopulate'))
+
 
 
 
@@ -37,7 +33,7 @@ AdminUserSchema.methods.generateJWT = function (extra = {}): string {
         {
             _id: this.id,
             email: this.email,
-            role: this.adminRoleId.title,
+            role: this.role,
             ...extra
         },
         process.env.SECRET,
@@ -64,4 +60,4 @@ AdminUserSchema.methods.comparePassword = async function (password): Promise<boo
 };
 
 
-export { AdminUserSchema, AdminRoleSchema };
+export { AdminUserSchema };
