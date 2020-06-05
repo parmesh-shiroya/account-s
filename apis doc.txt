@@ -1,0 +1,205 @@
+Register Admin user (POST admin)
+    --Permission
+	    Check is added by admin
+    --Check
+        Check is email already exist
+    Add it to admin
+
+
+
+Update Admin user (PATCH admin)
+    --Permission
+        Check is requester is admin or the owner of profile
+    --Check
+        Remove unchangeable keys from body as per owner type
+    update the admin
+
+Get All Admin (GET admin)
+    --Permission
+        Check is reqeuester is admin
+    Get all admin
+
+Get One Admin (GET admin/:id)
+    --Permission
+        Check is requester is admin or owner
+    Get one admin
+
+
+Login admin (POST admin/login)
+    
+
+
+
+
+Institute
+register Institute (POST institute)
+    --permission
+        --Check is requester is admin
+    --Check
+        Is email and mobile no is not exist
+    Add it to the institute
+    Add it in Institute User as Institute Admin
+
+Update Institute (PATCH Institute)
+    --permission
+        --Check is requester is admin or woner of the institute
+    
+    --Check
+        Remove unchangeable keys from body
+    Update Institute
+
+
+get one institute(GET institute/:id)
+    --Permission
+        Check is requester is admin or Institeu member
+    get institute data
+    Depend on the role remove field that should not be return 
+
+Get ine institute (GET institute)
+    --permission
+        Check is requester is admin 
+    Get all Institutes
+    Remove field that should not be return
+
+
+Add Institute member (POST institute_member)
+    --Permission
+        Check is requester is admin or owner of the institute
+    Add Institute member
+
+Update Institute member(PATCH institute/:insId/member/:memId)
+    --Permission
+        Check is requester is admin or owner of the institute
+    --Check
+        remove unchangeable field from body
+    update institute member
+
+get all institute members(GET institute/:insId/member)
+    --Permission
+        Check is requester is admin or owner of the institute
+    GEt all institute members by the institute id
+
+
+get institute member(GET institute/:insId/member/:memId)
+    --Permission
+        Check is requester is admin or owner of the institute
+    Get member detail and return it
+
+login (POST institute/login)
+
+#Bank Details Same for Documents
+Add BankInfo (POST user/:userId/bankinfo Or institute/:insId/bankInfo)
+    --Permission    
+        if(institute)
+            Check is requester is admin or owner of the institute
+        else if (user)
+            Check is requester is admin or institutemaster of user or it's user it seld
+    Add bank info
+
+Update bank info (POST user/:userId/bankinfo/:id Or institute/:insId/bankInfo/:id)
+    --Permission    
+        if(institute)
+            Check is requester is admin or owner of the institute
+        else if (user)
+            Check is requester is admin or institutemaster of user or it's user it self
+    Update bankInfo where ownerId and ownerType and bankId
+
+Get One banks (GET user/:userId/bankinfo/:id Or institute/:insId/bankInfo/:id)
+    --Permission    
+        if(institute)
+            Check is requester is admin or owner of the institute
+        else if (user)
+            Check is requester is admin or institutemaster of user or it's user it self
+    Get bankInfo where ownerId and ownerType and bankId=
+
+Get All banks (GET user/:userId/bankinfo Or institute/:insId/bankInfo)
+    --Permission    
+        if(institute)
+            Check is requester is admin or owner of the institute
+        else if (user)
+            Check is requester is admin or institutemaster of user or it's user it self
+    Get bankInfo where ownerId and ownerType
+
+
+#User
+Add (POST institute/:id/user)
+    --Permission
+        if(admin)
+        Check is requester is admin 
+        if(institute)
+        id is same as the token's institute id
+    --Check
+        check is mobile number is exist
+    Add user in db
+
+
+Update (PATCH institute/:id/user/:id)
+    --Permission
+        if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+        if(user)
+            id is same as mentioned in userId and is under mentioned InstiuteiD
+    Remove unchangeable kets
+    update user
+
+GET one(GET institute/:insId/user/:id)
+    --Permission
+        if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+        if(user)
+            id is same as mentioned in userId and is under mentioned InstiuteiD
+        return user
+
+GET all user (GET institute/:insId/user)
+    --Permission
+        if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+    Get all users 
+
+login (POST user/login)
+
+
+#userRefrence
+Add user Refrence (POST institute/:id/user/:id/userrefrence)
+    --Permission
+    if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+        if(user)
+            id is same as mentioned in userId and is under mentioned InstiuteiD
+
+Update user Refrence (PATCH institute/:id/user/:id/userrefrence/:id)
+    --Permission
+    if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+        if(user)
+            id is same as mentioned in userId and is under mentioned InstiuteiD
+
+        Update where userId = and_id=
+
+GEt user refrence (GET institute/:id/user/:id/userrefrence/:id )
+--Permission
+    if(admin)
+            Check is requester is admin 
+        if(institute)
+            id is same as the token's institute id and the userId is under institute
+        if(user)
+            id is same as mentioned in userId and is under mentioned InstiuteiD
+
+        GET where userId = and_id=
+    
+
+
+
+
+
+
