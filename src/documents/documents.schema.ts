@@ -1,20 +1,38 @@
-import * as mongoose from 'mongoose';
-
-const DocumentsSchema = new mongoose.Schema({
-    type: String,
-    files: [mongoose.Schema.Types.Mixed],
-    isverified: { type: Boolean, default: false },
-    note: String,
-    fileData: mongoose.Schema.Types.Mixed,
-    extra: mongoose.Schema.Types.Mixed,
-    ownerId: mongoose.Schema.Types.ObjectId,
-    ownerType: String,
-    state: String,
-    isEncrypted: { type: Boolean, default: false },
-    isActive: { type: Boolean, default: true },
-    createdIp: String,
-    updatedIp: String,
-})
+import { Document as MDocument, Schema as MSchema } from 'mongoose';
+import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 
 
-export { DocumentsSchema }
+
+@Schema({ timestamps: true })
+export class Document extends MDocument {
+    @Prop()
+    type: string;
+    @Prop({ type: [MSchema.Types.Mixed] })
+    files: any;
+    @Prop({ default: false })
+    isverified: boolean;
+    @Prop()
+    note: string;
+    @Prop({ type: MSchema.Types.Mixed })
+    fileData: any;
+    @Prop({ type: MSchema.Types.Mixed })
+    extra: any;
+    @Prop({ type: MSchema.Types.ObjectId })
+    ownerId: string;
+    @Prop()
+    ownerType: string;
+    @Prop()
+    state: string;
+    @Prop({ default: false })
+    isEncrypted: boolean;
+    @Prop({ default: true })
+    isActive: boolean;
+    @Prop()
+    createdIp: string;
+    @Prop()
+    updatedIp: string;
+}
+
+
+
+export const DocumentsSchema = SchemaFactory.createForClass(Document)

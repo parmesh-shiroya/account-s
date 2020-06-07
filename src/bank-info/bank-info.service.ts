@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { BankInfo } from './bank-info.type';
 import { InsertBankInfoDTO, UpdateBankInfoDTO } from './bank-info.dto';
+import { BankInfo } from './bank-info.schema';
 
 @Injectable()
 export class BankInfoService {

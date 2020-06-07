@@ -1,13 +1,14 @@
 import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { Institute } from "./institute.type"
+
 import { InsertInstituteDTO } from './institute.dto';
 import { UpdateAdminDTO } from 'src/admin/admin.dto';
+import { Institute } from './institute.schema';
 @Injectable()
 export class InstituteService {
     constructor(
-        @InjectModel('Institute') private readonly instituteModel: Model<Institute>
+        @InjectModel(Institute.name) private readonly instituteModel: Model<Institute>,
     ) { }
 
 

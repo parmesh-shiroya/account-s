@@ -1,13 +1,14 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { InstituteUserInterface } from "./institute.type"
+
 import { InsertInstituteUserDTO, UpdateInstituteUserDTO, LoginInstituteDTO } from './institute.dto';
+import { InstituteUser } from './institute.schema';
 
 @Injectable()
 export class InstituteUserService {
     constructor(
-        @InjectModel('InstituteUser') private readonly instituteUserModel: Model<InstituteUserInterface>,
+        @InjectModel(InstituteUser.name) private readonly instituteUserModel: Model<InstituteUser>,
     ) { }
 
     async insert(insertInstituteUserDTO: InsertInstituteUserDTO) {

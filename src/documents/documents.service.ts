@@ -1,12 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Documents } from './documents.type';
+
 import { InsertDocumentDTO, UpdateDocumentDTO } from './documents.dto';
+import { Document } from './documents.schema';
 
 @Injectable()
 export class DocumentsService {
-    constructor(@InjectModel("Documents") private readonly documentsModel: Model<Documents>) { }
+    constructor(@InjectModel(Document.name) private readonly documentsModel: Model<Document>) { }
 
     async insert(insertDocument: InsertDocumentDTO) {
         return await new this.documentsModel(insertDocument).save()

@@ -1,15 +1,16 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { AdminUserInterface } from "./admin.type"
+
 import { InsertAdminDTO, LoginAdminDTO, UpdateAdminDTO } from './admin.dto';
+import { AdminUser } from './admin.schema';
 
 
 
 @Injectable()
 export class AdminService {
     constructor(
-        @InjectModel('AdminUser') private readonly adminUserModel: Model<AdminUserInterface>
+        @InjectModel('AdminUser') private readonly adminUserModel: Model<AdminUser>
     ) { }
 
     async insert(insertAdminDTO: InsertAdminDTO) {
@@ -34,6 +35,7 @@ export class AdminService {
 
     async update(adminId: string, updateAdminDto: UpdateAdminDTO) {
         let admin = await this.getOne({ _id: adminId })
+
         let update = Object.assign(admin, updateAdminDto)
         return await update.save();
     }

@@ -11,6 +11,11 @@ export class InsertUserDTO {
     @IsNotEmpty()
     city: string;
     pincode: string;
+    panNo: string;
+}
+
+export class UserRefrenceDTO {
+
 }
 
 
@@ -40,6 +45,6 @@ export class UpdateUserDTO {
     pincode: string;
     updatedIp: string;
     updatedBy: string;
-
+    panNo: string;
 
 }

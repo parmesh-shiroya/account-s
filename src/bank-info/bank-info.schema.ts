@@ -1,18 +1,31 @@
-import * as mongoose from 'mongoose';
+import { Document, Schema as MSchema } from 'mongoose';
+import { Schema, Prop, SchemaFactory } from '@nestjs/mongoose';
 
 
-const BankInfoSchema = new mongoose.Schema({
-    bankName: String,
-    acNo: String,
-    acType: String,
-    ifscCode: String,
-    ownerId: mongoose.Schema.Types.ObjectId,
-    ownerType: String,
-    isVerified: { type: Boolean, default: false },
-    isActive: { type: Boolean, default: true },
-    createdIp: String,
-    updatedIp: String,
-}, { timestamps: true })
+@Schema({ timestamps: true })
+export class BankInfo extends Document {
+    @Prop()
+    bankName: string;
 
+    @Prop()
+    acNo: string;
+    @Prop()
+    acType: string;
+    @Prop()
+    ifscCode: string;
+    @Prop({ type: MSchema.Types.ObjectId })
+    ownerId: string;
+    @Prop()
+    ownerType: string;
+    @Prop({ default: false })
+    isVerified: { type: Boolean; default: false };
+    @Prop({ default: true })
+    isActive: boolean;
+    @Prop()
+    createdIp: string;
+    @Prop()
+    updatedIp: string;
+}
 
-export { BankInfoSchema }
+export const BankInfoSchema = SchemaFactory.createForClass(BankInfo)
+

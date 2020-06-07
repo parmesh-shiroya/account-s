@@ -1,16 +1,16 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { User } from './users.schema';
+import { User, UserRefrence } from './users.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { InsertUserDTO, UpdateUserDTO, UserLoginDTO } from './users.dto';
+import { InsertUserDTO, UpdateUserDTO, UserLoginDTO, UserRefrenceDTO } from './users.dto';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+    constructor(@InjectModel(User.name) private userModel: Model<User>, @InjectModel(UserRefrence.name) private userRefrenceModel: Model<UserRefrence>) { }
 
     async insert(insertUserDTO: InsertUserDTO) {
         const user = await this.userModel.findOne({ mobile: insertUserDTO.mobile })
-        if (!user) {
+        if (user) {
             throw new BadRequestException("User already exists")
         }
         return await new this.userModel(insertUserDTO).save();
@@ -42,5 +42,18 @@ export class UsersService {
         let user = await this.getOne({ _id: id })
         let update = Object.assign(user, userData)
         return await update.save()
+    }
+
+
+    async getUserRefrence(userId: string) {
+        return await this.userRefrenceModel.findOne({ userId: userId })
+
+    }
+
+    async upsertUserRefrence(userId: string, userRefrenceData: UserRefrenceDTO) {
+        return await this.userRefrenceModel.findOneAndUpdate({ userId: userId }, {
+            $set: userRefrenceData
+        }, { new: true })
+
     }
 }

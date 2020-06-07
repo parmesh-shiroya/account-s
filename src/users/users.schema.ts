@@ -2,12 +2,13 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MSchema } from 'mongoose';
 import * as jwt from 'jsonwebtoken';
 import { ROLES } from 'src/shared/constants';
+import { InstituteUser, Institute } from 'src/institute/institute.schema';
 
 
 
 @Schema({ timestamps: true })
 export class User extends Document {
-    @Prop({ type: MSchema.Types.ObjectId, ref: "Institute" })
+    @Prop({ type: MSchema.Types.ObjectId, ref: Institute.name })
     instituteId: string;
 
     @Prop()
@@ -30,6 +31,8 @@ export class User extends Document {
     dob: string;
     @Prop()
     city: string;
+    @Prop()
+    panNo: string;
 
     @Prop({ default: "Gujarat" })
     state: string;
@@ -41,11 +44,11 @@ export class User extends Document {
     pincode: string;
     @Prop()
     createdIp: string;
-    @Prop({ type: MSchema.Types.ObjectId, ref: "InstituteUser" })
+    @Prop({ type: MSchema.Types.ObjectId, ref: InstituteUser.name })
     createdBy: string;
     @Prop()
     updatedIp: string;
-    @Prop({ type: MSchema.Types.ObjectId, ref: "InstituteUser" })
+    @Prop({ type: MSchema.Types.ObjectId, ref: InstituteUser.name })
     updatedBy: string;
     @Prop()
     fcmToken: string;
@@ -69,9 +72,29 @@ export class User extends Document {
     }
 }
 
+@Schema({ timestamps: true })
+export class UserRefrence extends Document {
+    @Prop({ type: MSchema.Types.ObjectId, ref: User.name })
+    userId: string;
+    @Prop()
+    panNo: string;
+    @Prop()
+    panImage: string;
+    @Prop()
+    aadhaarNo: string;
+    @Prop()
+    aadhaarFrontImage: string;
+    @Prop()
+    aadhaarFrontBack: string;
+    @Prop()
+    gst_in: string;
+}
+
 
 
 
 
 
 export const UserSchema = SchemaFactory.createForClass(User)
+
+export const UserRefrenceSchema = SchemaFactory.createForClass(UserRefrence)
