@@ -4,16 +4,28 @@ import {
   ExecutionContext,
   HttpException,
   HttpStatus,
+  Inject,
 } from '@nestjs/common';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import * as jwt from 'jsonwebtoken';
 import { ROLES } from './constants';
+import { UsersService } from 'src/users/users.service';
+import { Reflector } from '@nestjs/core';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private readonly roles?: ROLES[]) { }
+  constructor(private reflector: Reflector, @Inject('UsersService') private readonly userService?: UsersService) {
+    console.log("userService", userService)
+
+  }
+  roles = [ROLES.ADMIN]
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+    const roles = this.reflector.get<string[]>('roles', context.getHandler());
+    const checkAccess = this.reflector.get('check_access', context.getHandler());
+    if (!roles) {
+      return true;
+    }
     if (request) {
       if (!request.headers.authorization) {
         return false;

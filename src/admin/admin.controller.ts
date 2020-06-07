@@ -4,6 +4,7 @@ import { InsertAdminDTO, LoginAdminDTO, UpdateAdminDTO } from "./admin.dto"
 import { AdminService } from "./admin.service"
 import { AuthGuard } from 'src/shared/auth.gaurd';
 import { ROLES } from 'src/shared/constants';
+import { Roles } from 'src/shared/roles.decorator';
 
 @Controller('admin')
 export class AdminController {
@@ -24,19 +25,22 @@ export class AdminController {
     }
 
     @Get()
-    @UseGuards(new AuthGuard([ROLES.ADMIN]))
+    @Roles(ROLES.ADMIN)
+    @UseGuards(AuthGuard)
     async getAll() {
         return this.adminService.getAll();
     }
 
     @Get(":id")
-    @UseGuards(new AuthGuard([ROLES.ADMIN]))
+    @Roles(ROLES.ADMIN)
+    @UseGuards(AuthGuard)
     async getOne(@Param('id') adminId: string) {
         return await this.adminService.getOne({ _id: adminId })
     }
 
     @Patch(":id")
-    @UseGuards(new AuthGuard([ROLES.ADMIN]))
+    @Roles(ROLES.ADMIN)
+    @UseGuards(AuthGuard)
     async updateAdmin(@Param('id') adminId: string, @Body() updateAdminDto: UpdateAdminDTO) {
         return await this.adminService.update(adminId, updateAdminDto)
     }

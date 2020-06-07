@@ -28,9 +28,9 @@ export class UpdateUserDTO {
     mobile: string;
     image: string;
     email: string;
-    isMobileVerified: string;
-    isActive: string;
-    isBlocked: string;
+    isMobileVerified: boolean;
+    isActive: boolean;
+    isBlocked: boolean;
     note: string;
     dob: string;
     city: string;

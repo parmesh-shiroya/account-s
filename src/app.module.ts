@@ -7,10 +7,13 @@ import { InstituteModule } from './institute/institute.module';
 import { BankInfoModule } from './bank-info/bank-info.module';
 import { DocumentsModule } from './documents/documents.module';
 import { UsersModule } from './users/users.module';
+import { FirebaseService } from './shared/firebase';
+
 
 @Module({
   imports: [AdminModule, MongooseModule.forRoot(process.env.MONGO_URL, { useNewUrlParser: true }), InstituteModule, BankInfoModule, DocumentsModule, UsersModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, FirebaseService],
+
 })
 export class AppModule { }

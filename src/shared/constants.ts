@@ -5,3 +5,8 @@ export enum ROLES {
 }
 
 
+export enum ID_TYPE {
+    ADMIN,
+    INSTITUTE,
+    USER
+}

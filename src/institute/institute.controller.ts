@@ -3,7 +3,8 @@ import { InstituteUserService } from './institute-user.service';
 import { InstituteService } from './institute.service';
 import { LoginInstituteDTO, UpdateInstituteDTO, InsertInstituteDTO, InsertInstituteUserDTO, UpdateInstituteUserDTO } from './institute.dto';
 import { AuthGuard } from 'src/shared/auth.gaurd';
-import { ROLES } from 'src/shared/constants';
+import { ROLES, ID_TYPE } from 'src/shared/constants';
+import { CheckAccess, Roles } from 'src/shared/roles.decorator';
 
 @Controller('institute')
 export class InstituteController {
@@ -17,17 +18,21 @@ export class InstituteController {
         return await this.instituteUserService.login(loginInstituteDTO)
     }
 
-    @Post('user')
+    @Post(':insId/user')
     @UsePipes(new ValidationPipe())
-    @UseGuards(new AuthGuard([ROLES.INSTITUTE_ADMIN]))
-    async registerInstituteUser(@Body() insertInstituteUserDTO: InsertInstituteUserDTO) {
-        // TODO: Attach institute id
+    @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
+    @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
+    @UseGuards(AuthGuard)
+    async registerInstituteUser(@Param("insId") insId: string, @Body() insertInstituteUserDTO: InsertInstituteUserDTO) {
+        insertInstituteUserDTO.instituteId = insId;
         return await this.instituteUserService.insert(insertInstituteUserDTO)
     }
 
-    @Patch('user/:id')
+    @Patch(':insId/user/:id')
     @UsePipes(new ValidationPipe())
-    @UseGuards(new AuthGuard([ROLES.INSTITUTE_ADMIN]))
+    @CheckAccess("params.insId", ID_TYPE.ADMIN)
+    @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
+    @UseGuards(AuthGuard)
     async updateInstituteUser(@Param('id') id: string, @Body() updateInstituteUserDTO: UpdateInstituteUserDTO) {
         return await this.instituteUserService.update(id, updateInstituteUserDTO);
     }
@@ -35,7 +40,9 @@ export class InstituteController {
 
     @Post()
     @UsePipes(new ValidationPipe())
-    @UseGuards(new AuthGuard([ROLES.ADMIN]))
+
+    @Roles(ROLES.ADMIN)
+    @UseGuards(AuthGuard)
     async register(@Body() insertInstituteDTO: InsertInstituteDTO) {
         let institute = await this.instituteService.insert(insertInstituteDTO)
         this.instituteUserService.insert({ instituteId: institute._id, ...insertInstituteDTO })
@@ -43,19 +50,21 @@ export class InstituteController {
     }
 
     @Get()
-    @UseGuards(new AuthGuard([ROLES.ADMIN]))
+    @Roles(ROLES.ADMIN)
+    @UseGuards(AuthGuard)
     async getAll() {
         return await this.instituteService.getAll();
     }
 
     @Get(":id")
-    @UseGuards(new AuthGuard())
+    @UseGuards(AuthGuard)
     async getOne(@Param('id') id: string) {
         return await this.instituteService.getOne({ _id: id })
     }
 
     @Patch(":id")
-    @UseGuards(new AuthGuard([ROLES.ADMIN, ROLES.INSTITUTE_ADMIN]))
+    @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
+    @UseGuards(AuthGuard)
     async update(@Param('id') id: string, @Body() updateInstituteDto: UpdateInstituteDTO) {
         return await this.instituteService.update(id, updateInstituteDto)
     }
