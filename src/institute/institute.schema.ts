@@ -86,6 +86,7 @@ export class InstituteUser extends Document {
         return jwt.sign(
             {
                 _id: this.id,
+                instituteId: this.instituteId,
                 email: this.email,
                 role: this.role,
                 ...extra

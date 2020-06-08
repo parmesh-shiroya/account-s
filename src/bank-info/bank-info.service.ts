@@ -22,8 +22,8 @@ export class BankInfoService {
         return await this.bankInfoModel.find(filter);
     }
 
-    async update(id: string, updateBankInfoDto: UpdateBankInfoDTO) {
-        let bankInfo = await this.getOne({ _id: id })
+    async update(filter: object, updateBankInfoDto: UpdateBankInfoDTO) {
+        let bankInfo = await this.getOne(filter)
         let update = Object.assign(bankInfo, updateBankInfoDto)
         return await update.save();
     }

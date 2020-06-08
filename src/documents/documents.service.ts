@@ -22,8 +22,8 @@ export class DocumentsService {
     async getAll(filter: object = {}) {
         return await this.documentsModel.find({ filter })
     }
-    async update(id: string, updateDocumentDto: UpdateDocumentDTO) {
-        let document = await this.getOne({ _id: id })
+    async update(filter: object, updateDocumentDto: UpdateDocumentDTO) {
+        let document = await this.getOne(filter)
         let update = Object.assign(document, updateDocumentDto)
         return await update.save();
     }

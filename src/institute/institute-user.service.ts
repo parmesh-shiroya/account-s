@@ -27,8 +27,8 @@ export class InstituteUserService {
     async getAll(filter: object = {}) {
         return await this.instituteUserModel.find(filter)
     }
-    async update(id: string, updateInstituteUserDTO: UpdateInstituteUserDTO) {
-        let instituteUser = await this.getOne({ _id: id })
+    async update(filter: object, updateInstituteUserDTO: UpdateInstituteUserDTO) {
+        let instituteUser = await this.getOne(filter)
         let update = Object.assign(instituteUser, updateInstituteUserDTO)
         return await update.save();
     }

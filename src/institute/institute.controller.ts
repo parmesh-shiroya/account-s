@@ -19,30 +19,31 @@ export class InstituteController {
     }
 
     @Post(':insId/user')
-    @UsePipes(new ValidationPipe())
+
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
     @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @UseGuards(AuthGuard)
+    @UsePipes(new ValidationPipe())
     async registerInstituteUser(@Param("insId") insId: string, @Body() insertInstituteUserDTO: InsertInstituteUserDTO) {
         insertInstituteUserDTO.instituteId = insId;
         return await this.instituteUserService.insert(insertInstituteUserDTO)
     }
 
     @Patch(':insId/user/:id')
-    @UsePipes(new ValidationPipe())
-    @CheckAccess("params.insId", ID_TYPE.ADMIN)
+
+    @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
     @UseGuards(AuthGuard)
-    async updateInstituteUser(@Param('id') id: string, @Body() updateInstituteUserDTO: UpdateInstituteUserDTO) {
-        return await this.instituteUserService.update(id, updateInstituteUserDTO);
+    @UsePipes(new ValidationPipe())
+    async updateInstituteUser(@Param("insId") insId: string, @Param('id') id: string, @Body() updateInstituteUserDTO: UpdateInstituteUserDTO) {
+        return await this.instituteUserService.update({ _id: id, instituteId: insId }, updateInstituteUserDTO);
     }
 
 
     @Post()
-    @UsePipes(new ValidationPipe())
-
     @Roles(ROLES.ADMIN)
     @UseGuards(AuthGuard)
+    @UsePipes(new ValidationPipe())
     async register(@Body() insertInstituteDTO: InsertInstituteDTO) {
         let institute = await this.instituteService.insert(insertInstituteDTO)
         this.instituteUserService.insert({ instituteId: institute._id, ...insertInstituteDTO })
@@ -59,10 +60,12 @@ export class InstituteController {
     @Get(":id")
     @UseGuards(AuthGuard)
     async getOne(@Param('id') id: string) {
+        // TODO:Remove field that should not be visible
         return await this.instituteService.getOne({ _id: id })
     }
 
     @Patch(":id")
+    @CheckAccess("params.id", ID_TYPE.INSTITUTE)
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
     @UseGuards(AuthGuard)
     async update(@Param('id') id: string, @Body() updateInstituteDto: UpdateInstituteDTO) {

@@ -35,6 +35,7 @@ export class UsersController {
 
     @Get('institute/:insId/users')
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
+    @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @UseGuards(AuthGuard)
     async getUsers(@Param('insId') insId: string) {
         return await this.userService.getAll({ instituteId: insId })
