@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { AdminController } from './admin.controller';
 import { AdminService } from './admin.service';
 import * as bcrypt from 'bcryptjs';
+import * as jwt from 'jsonwebtoken';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AdminUserSchema, AdminUser } from './admin.schema'
 import * as mongoose from 'mongoose';
@@ -16,6 +17,21 @@ import * as mongoose from 'mongoose';
         }
         next();
       });
+      schema.methods.generateJWT = function (extra = {}): string {
+        return jwt.sign(
+          {
+            _id: this.id,
+            email: this.email,
+            role: this.role,
+            ...extra
+          },
+          process.env.SECRET,
+          { expiresIn: '365d' }
+        );
+      }
+      schema.methods.comparePassword = async function (password): Promise<boolean> {
+        return bcrypt.compare(password, this.password)
+      }
       return schema;
     }
     // schema: AdminUserSchema

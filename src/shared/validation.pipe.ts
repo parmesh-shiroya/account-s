@@ -25,7 +25,7 @@ export class ValidationPipe implements PipeTransform {
     const errors = await validate(object);
     if (errors.length > 0) {
       throw new HttpException(
-        `Validation failed: ${this.formatErrors(errors)}`,
+        this.formatErrors(errors),
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -38,13 +38,16 @@ export class ValidationPipe implements PipeTransform {
   }
 
   private formatErrors(errors: any[]) {
-    return errors
-      .map(err => {
-        for (let property in err.constraints) {
-          return err.constraints[property];
-        }
-      })
-      .join(', ');
+    let e = {}
+    errors.forEach(err => {
+      for (let property in err.constraints) {
+        e[err.property] = err.constraints[property];
+        // return err.constraints[property];
+      }
+    })
+
+    console.log(e)
+    return e;
   }
 
   private isEmpty(value: any) {

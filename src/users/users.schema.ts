@@ -1,7 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MSchema } from 'mongoose';
-import * as jwt from 'jsonwebtoken';
-import { ROLES } from 'src/shared/constants';
+
 import { InstituteUser, Institute } from 'src/institute/institute.schema';
 
 
@@ -55,21 +54,10 @@ export class User extends Document {
 
     createdAt: string;
     updatedAt: string;
-    generateJWT = function (extra = {}): string {
-        return jwt.sign(
-            {
-                _id: this.id,
-                mobile: this.mobile,
-                email: this.email,
-                instituteId: this.instituteId,
-                ...extra,
-                role: ROLES.USER,
+    generateJWT: (extra?: object) => any;
 
-            },
-            process.env.SECRET,
-            { expiresIn: '365d' }
-        );
-    }
+    comparePassword: (password: string) => any;
+
 }
 
 @Schema({ timestamps: true })

@@ -1,5 +1,5 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
-import { Model } from 'mongoose';
+import { Model, ConnectionStates } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 
 import { InsertInstituteUserDTO, UpdateInstituteUserDTO, LoginInstituteDTO } from './institute.dto';
@@ -12,11 +12,12 @@ export class InstituteUserService {
     ) { }
 
     async insert(insertInstituteUserDTO: InsertInstituteUserDTO) {
-        let institute = await this.instituteUserModel.findOne({ $or: [{ email: insertInstituteUserDTO.email }] })
+        let institute = await this.instituteUserModel.findOne({ email: insertInstituteUserDTO.email })
         if (institute) {
             throw new BadRequestException('User already exist')
         }
-        return await new this.instituteUserModel(InsertInstituteUserDTO).save()
+        console.log(insertInstituteUserDTO)
+        return await new this.instituteUserModel(insertInstituteUserDTO).save()
     }
     async getOne(filter: object = {}) {
         const instituteUser = await this.instituteUserModel.findOne(filter)
@@ -49,6 +50,7 @@ export class InstituteUserService {
             role: user.role,
             education: user.education,
             acchievement: user.acchievement,
+            instituteId: user.instituteId,
             token: user.generateJWT(),
         }
     }

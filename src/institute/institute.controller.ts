@@ -1,4 +1,5 @@
-import { Controller, Post, Body, UsePipes, ValidationPipe, UseGuards, Get, Param, Patch } from '@nestjs/common';
+import { Controller, Post, Body, UsePipes, UseGuards, Get, Param, Patch } from '@nestjs/common';
+import { ValidationPipe } from 'src/shared/validation.pipe';
 import { InstituteUserService } from './institute-user.service';
 import { InstituteService } from './institute.service';
 import { LoginInstituteDTO, UpdateInstituteDTO, InsertInstituteDTO, InsertInstituteUserDTO, UpdateInstituteUserDTO } from './institute.dto';
@@ -18,8 +19,7 @@ export class InstituteController {
         return await this.instituteUserService.login(loginInstituteDTO)
     }
 
-    @Post(':insId/user')
-
+    @Post(':insId/member')
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
     @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @UseGuards(AuthGuard)
@@ -29,7 +29,18 @@ export class InstituteController {
         return await this.instituteUserService.insert(insertInstituteUserDTO)
     }
 
-    @Patch(':insId/user/:id')
+
+    @Get(':insId/member')
+    @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
+    @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
+    @UseGuards(AuthGuard)
+    @UsePipes(new ValidationPipe())
+    async getInstituteUser(@Param("insId") insId: string) {
+        // TODO:Remove field that should not ne visible
+        return await this.instituteUserService.getAll({ instituteId: insId })
+    }
+
+    @Patch(':insId/member/:id')
 
     @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
@@ -46,7 +57,9 @@ export class InstituteController {
     @UsePipes(new ValidationPipe())
     async register(@Body() insertInstituteDTO: InsertInstituteDTO) {
         let institute = await this.instituteService.insert(insertInstituteDTO)
-        this.instituteUserService.insert({ instituteId: institute._id, ...insertInstituteDTO })
+
+
+        await this.instituteUserService.insert({ instituteId: institute._id, ...insertInstituteDTO })
         return institute;
     }
 

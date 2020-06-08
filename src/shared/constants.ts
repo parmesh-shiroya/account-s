@@ -1,7 +1,7 @@
 export enum ROLES {
-    ADMIN,
-    INSTITUTE_ADMIN,
-    USER
+    ADMIN = "ADMIN",
+    INSTITUTE_ADMIN = "INSTITUTE_ADMIN",
+    USER = "USER"
 }
 
 

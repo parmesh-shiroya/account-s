@@ -23,13 +23,14 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     const checkAccess = this.reflector.get('check_access', context.getHandler());
-    if (!roles) {
+    console.log(roles, checkAccess)
+    if (!roles)
       return true;
-    }
+
     if (request) {
-      if (!request.headers.authorization) {
+      if (!request.headers.authorization)
         return false;
-      }
+
       console.log(request.headers.authorization);
       request.user = await this.validateToken(request.headers.authorization);
       if (roles && !roles.includes(request.user.role))
@@ -55,9 +56,9 @@ export class AuthGuard implements CanActivate {
       return true;
     } else {
       const ctx: any = GqlExecutionContext.create(context).getContext();
-      if (!ctx.headers.authorization) {
+      if (!ctx.headers.authorization)
         return false;
-      }
+
       ctx.user = await this.validateToken(ctx.headers.authorization);
       if (roles && !roles.includes(ctx.user.role))
         return false

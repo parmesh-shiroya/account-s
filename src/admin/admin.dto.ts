@@ -3,8 +3,8 @@ import { ROLES } from "src/shared/constants";
 
 
 export class InsertAdminDTO {
-    @IsNotEmpty()
-    role: ROLES
+    // @IsNotEmpty()
+    // role: ROLES
     @IsNotEmpty()
     firstName: string
     @IsNotEmpty()

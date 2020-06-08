@@ -13,6 +13,8 @@ export class AdminController {
     constructor(private readonly adminService: AdminService) { }
 
     @Post()
+    // @Roles(ROLES.ADMIN)
+    // @UseGuards(AuthGuard)
     @UsePipes(new ValidationPipe())
     async insert(@Body() insertAdminDTO: InsertAdminDTO) {
         return this.adminService.insert(insertAdminDTO)

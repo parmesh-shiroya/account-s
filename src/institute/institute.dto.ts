@@ -18,10 +18,10 @@ export class InsertInstituteDTO {
     phone: string
     @IsNotEmpty()
     address: string
-    @IsNotEmpty()
-    state: string
-    @IsNotEmpty()
+    landmark: string
     city: string
+    state: string
+    country: string
     @IsNotEmpty()
     pincode: string
     @IsOptional()

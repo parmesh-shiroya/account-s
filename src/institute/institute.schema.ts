@@ -1,6 +1,5 @@
 import { Document, Schema as MSchema } from 'mongoose';
-import * as bcrypt from 'bcryptjs'
-import * as jwt from 'jsonwebtoken'
+
 import { ROLES } from 'src/shared/constants';
 import { AdminUser } from 'src/admin/admin.schema';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
@@ -23,9 +22,16 @@ export class Institute extends Document {
     @Prop()
     address: string;
     @Prop()
-    state: string;
-    @Prop()
+    landmark: string;
+    @Prop({ default: "Surat" })
     city: string;
+
+
+    @Prop({ default: "Gujarat" })
+    state: string;
+
+    @Prop({ default: "IN" })
+    country: string;
     @Prop()
     pincode: string;
     @Prop({ type: MSchema.Types.Mixed })
@@ -46,7 +52,7 @@ export class Institute extends Document {
     updatedBy: string;
 }
 
-
+@Schema({ timestamps: true })
 export class InstituteUser extends Document {
     @Prop({ type: MSchema.Types.ObjectId, ref: Institute.name })
     instituteId: string;
@@ -82,22 +88,9 @@ export class InstituteUser extends Document {
     updatedIp: string;
     @Prop({ type: MSchema.Types.ObjectId, ref: AdminUser.name })
     updatedBy: string;
-    generateJWT = function (extra = {}): string {
-        return jwt.sign(
-            {
-                _id: this.id,
-                instituteId: this.instituteId,
-                email: this.email,
-                role: this.role,
-                ...extra
-            },
-            process.env.SECRET,
-            { expiresIn: '365d' }
-        );
-    };
-    comparePassword = async function (password): Promise<boolean> {
-        return bcrypt.compare(password, this.password)
-    };
+    generateJWT: (extra?: object) => any;
+
+    comparePassword: (password: string) => any;
 }
 
 
