@@ -24,7 +24,7 @@ export class AuthGuard implements CanActivate {
     const roles = this.reflector.get<string[]>('roles', context.getHandler());
     const checkAccess = this.reflector.get('check_access', context.getHandler());
     console.log(roles, checkAccess)
-    if (!roles)
+    if (!roles && !checkAccess)
       return true;
 
     if (request) {
@@ -41,12 +41,14 @@ export class AuthGuard implements CanActivate {
         checkAccess.idPath.split(".").forEach(k => {
           id = id[k.trim()]
         })
-        if (checkAccess.idRole === ID_TYPE.USER) {
-          if (request.user.role === ROLES.USER && request.user._id != id)
+
+        if (checkAccess.idRole == ID_TYPE.USER) {
+          if (request.user.role == ROLES.USER && request.user._id != id)
             return false
           if (request.user.role === ROLES.INSTITUTE_ADMIN) {
             let userData = await this.userService.getOne({ _id: id })
-            if (!userData || userData.instituteId != request.user._id)
+            console.log(userData)
+            if (!userData || userData.instituteId != request.user.instituteId)
               return false
           }
 

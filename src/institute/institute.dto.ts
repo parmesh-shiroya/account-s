@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsEmail, IsPhoneNumber, IsOptional, IsBoolean, Length } from "class-validator";
+import { IsNotEmpty, IsEmail, IsPhoneNumber, IsOptional, IsBoolean, Length, IsIn, isNotEmpty, IsNumber, IsNumberString, isBoolean } from "class-validator";
 import { ROLES } from "src/shared/constants";
 
 
@@ -39,17 +39,43 @@ export class InsertInstituteDTO {
 
 
 export class UpdateInstituteDTO {
+    @IsOptional()
+    @IsNotEmpty()
     name?: string
+    @IsOptional()
+    @IsNotEmpty()
     phone?: string
+    @IsOptional()
+    @IsNotEmpty()
     mobile?: string
+    @IsOptional()
+    @IsNotEmpty()
     logo?: string
+    @IsOptional()
+    @IsNotEmpty()
     address?: string
+    @IsOptional()
+    @IsNotEmpty()
     state?: string
+    @IsOptional()
+    @IsNotEmpty()
     city?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsNumberString()
     pincode?: string
+    @IsOptional()
+    @IsNotEmpty()
     happyClients?: any
+    @IsOptional()
+    @IsNotEmpty()
+    @IsBoolean()
     isEncrypted?: boolean
+    @IsOptional()
+    @IsNotEmpty()
     isVerified?: boolean
+    @IsOptional()
+    @IsNotEmpty()
     isActive?: boolean
 }
 
@@ -63,7 +89,9 @@ export class InsertInstituteUserDTO {
     @IsNotEmpty()
     @IsPhoneNumber("IN")
     mobile: string
-
+    @IsNotEmpty()
+    @IsIn([ROLES.INSTITUTE_ADMIN])
+    role?: ROLES
     @IsNotEmpty()
     firstName: string
     @IsNotEmpty()
@@ -75,15 +103,37 @@ export class InsertInstituteUserDTO {
 }
 
 export class UpdateInstituteUserDTO {
+    @IsOptional()
+    @IsNotEmpty()
     mobile?: string
+    @IsOptional()
+    @IsNotEmpty()
     firstName?: string
+    @IsOptional()
+    @IsNotEmpty()
     lastName?: string
+    @IsOptional()
+    @IsNotEmpty()
     password?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsIn(['MALE', 'FEMALE'])
     gender?: string
+    @IsOptional()
+    @IsNotEmpty()
+    @IsIn([ROLES.INSTITUTE_ADMIN])
     role?: ROLES
+    @IsOptional()
+    @IsNotEmpty()
     education?: string[]
+    @IsOptional()
+    @IsNotEmpty()
     acchievement?: string[]
+    @IsOptional()
+    @IsNotEmpty()
     isActive?: boolean
+    @IsOptional()
+    @IsNotEmpty()
     isOwner?: boolean
 }
 

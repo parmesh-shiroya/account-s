@@ -53,7 +53,7 @@ export class UsersService {
     async upsertUserRefrence(userId: string, userRefrenceData: UserRefrenceDTO) {
         return await this.userRefrenceModel.findOneAndUpdate({ userId: userId }, {
             $set: userRefrenceData
-        }, { new: true })
+        }, { new: true, upsert: true })
 
     }
 }

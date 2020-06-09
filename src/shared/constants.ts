@@ -6,7 +6,7 @@ export enum ROLES {
 
 
 export enum ID_TYPE {
-    ADMIN,
-    INSTITUTE,
-    USER
+    ADMIN = ROLES.ADMIN,
+    INSTITUTE = ROLES.INSTITUTE_ADMIN,
+    USER = ROLES.USER
 }

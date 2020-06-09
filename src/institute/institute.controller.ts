@@ -41,7 +41,6 @@ export class InstituteController {
     }
 
     @Patch(':insId/member/:id')
-
     @CheckAccess("params.insId", ID_TYPE.INSTITUTE)
     @Roles(ROLES.ADMIN, ROLES.INSTITUTE_ADMIN)
     @UseGuards(AuthGuard)

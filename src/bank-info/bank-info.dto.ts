@@ -21,12 +21,26 @@ export class InsertBankInfoDTO {
 }
 
 export class UpdateBankInfoDTO {
+    @IsOptional()
+    @IsNotEmpty()
     bankName?: string
+    @IsOptional()
+    @IsNotEmpty()
     acNo?: string
+    @IsOptional()
+    @IsNotEmpty()
     acType?: string
+    @IsOptional()
+    @IsNotEmpty()
     ifscCode?: string
+    @IsOptional()
+    @IsNotEmpty()
     ownerType?: string
+    @IsOptional()
+    @IsNotEmpty()
     isVerified?: boolean
+    @IsOptional()
+    @IsNotEmpty()
     isActive?: boolean
     updatedIp?: string
 }

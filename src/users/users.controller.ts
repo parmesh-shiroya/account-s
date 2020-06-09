@@ -30,7 +30,7 @@ export class UsersController {
     @UsePipes(new ValidationPipe())
     async checkUserExist(@Query('mobile') mobile: string) {
         let user = await this.userService.getOne({ mobile, isActive: true, isBlocked: false });
-        return { msg: "User Exist with" }
+        return { msg: "User Exist" }
     }
 
     @Get('institute/:insId/users')
@@ -58,8 +58,11 @@ export class UsersController {
     @Patch('users/:userId/refrence')
     @CheckAccess("params.userId", ID_TYPE.USER)
     @UseGuards(AuthGuard)
-    async updateUserRefrence(@Param('userId') userId: string, @Body() UserRefrenceDto: UserRefrenceDTO) {
-        return await this.userService.upsertUserRefrence(userId, UserRefrenceDto)
+    async updateUserRefrence(@Param('userId') userId: string, @Body() userRefrenceDto: UserRefrenceDTO) {
+        userRefrenceDto.userId = userId;
+
+        return await this.userService.upsertUserRefrence(userId, userRefrenceDto)
+
     }
 
 

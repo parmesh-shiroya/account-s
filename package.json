@@ -28,6 +28,7 @@
     "@nestjs/mongoose": "^7.0.1",
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/serve-static": "^2.1.1",
+    "@nestjs/swagger": "^4.5.10",
     "@nestjs/websockets": "^7.1.1",
     "apollo-server-express": "^2.14.1",
     "axios": "^0.19.2",
@@ -44,7 +45,8 @@
     "mongoose-autopopulate": "^0.12.2",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
-    "rxjs": "^6.5.4"
+    "rxjs": "^6.5.4",
+    "swagger-ui-express": "^4.1.4"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.0.0",
