@@ -1,3 +1,6 @@
+Collection URL : https://www.getpostman.com/collections/985830c0de446a1b49cb
+
+
 <p align="center">
   <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
 </p>
