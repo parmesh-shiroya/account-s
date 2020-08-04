@@ -1,4 +1,4 @@
-Collection URL : https://www.getpostman.com/collections/985830c0de446a1b49cb
+Collection URLs : https://www.getpostman.com/collections/985830c0de446a1b49cb
 
 
 <p align="center">
